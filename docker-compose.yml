@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    image: aws-sts-proxy
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - HEALTHCHECK=/hc
+      - EKS_ASSUME_ROLE=${EKS_ASSUME_ROLE}
+      - EXTERNAL_ID=${EXTERNAL_ID}

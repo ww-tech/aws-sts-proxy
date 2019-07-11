@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+eks_clusterid="${1}"
+
+# Some variables to set
+
+google_id_token="MY-GOOGLE-ID-TOKEN"
+sts_oidc_proxy_baseUrl="https://my-sts-proxy-host.domain.domain"
+role="arn:aws:iam::account-id:role/ROLENAME"
+role_duration="60"
+
+#
+export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+output="$(curl -s --request GET -H "Accept: application/json" \
+            -H "Authorization: $google_id_token" \
+            --url "${sts_oidc_proxy_baseUrl}/aws/sts_token?Duration=$role_duration&RoleArn=$role")"
+
+sts_info=$(echo "$output" | jq -r '"\(.creds.AccessKeyID)|\(.creds.SecretAccessKey)|\(.creds.SessionToken)"')
+
+IFS='| ' read -r -a arr_sts_info <<< "$sts_info"
+AWS_ACCESS_KEY_ID="${arr_sts_info[0]}"
+AWS_SECRET_ACCESS_KEY="${arr_sts_info[1]}"
+AWS_SESSION_TOKEN="${arr_sts_info[2]}"
+
+aws-iam-authenticator token -i $eks_clusterid

@@ -1,0 +1,19 @@
+
+$ chmod +x eks-oidc-sproxy
+
+$ PATH=$PATH:.
+
+$ kubectl --kubeconfig mycluster.kubecfg get pods --namespace kube-system 
+NAME                                      READY     STATUS             RESTARTS   AGE
+alb-ingress-controller-744fddf878-r2fd7   1/1       Running            0          137d
+aws-node-5xm7j                            1/1       Running            0          146d
+aws-node-7h8pk                            1/1       Running            0          137d
+aws-node-8r2sv                            1/1       Running            0          137d
+aws-node-gg5h6                            1/1       Running            0          137d
+coredns-7bcbfc4774-dnzxn                  1/1       Running            0          62d
+coredns-7bcbfc4774-s25nd                  1/1       Running            0          62d
+falco-df5zg                               1/1       Running            0          56d
+falco-f492s                               1/1       Running            0          137d
+falco-gb9l2                               1/1       Running            0          146d
+falco-sfpqt                               1/1       Running            0          137d
+...
